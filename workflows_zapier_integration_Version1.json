@@ -1,0 +1,37 @@
+{
+  "name": "ML Lead Integrations",
+  "triggers": [
+    {
+      "type": "google_sheets.new_or_updated_row",
+      "sheet_id": "{{GOOGLE_SHEET_ID}}",
+      "output_fields": ["Building", "Address", "Units", "Violations Count", "Tier", "Urgency Score"]
+    }
+  ],
+  "actions": [
+    {
+      "type": "hubspot.create_lead",
+      "fields": {
+        "name": "{{Property Manager Name}}",
+        "email": "{{Email}}",
+        "company": "{{Building}}",
+        "phone": "{{Phone}}"
+      }
+    },
+    {
+      "type": "mailchimp.send_email",
+      "fields": {
+        "to": "{{Email}}",
+        "subject": "2 Free HPD Calibration Reviews for {{Building}}",
+        "body": "We'll help with HPD calibration for {{Building}}. Details inside."
+      }
+    },
+    {
+      "type": "slack.send_message",
+      "fields": {
+        "channel": "#leads",
+        "text": "🚨 New high-urgency lead: {{Building}} (Tier {{Tier}})"
+      },
+      "condition": "{{Tier}} == 1"
+    }
+  ]
+}

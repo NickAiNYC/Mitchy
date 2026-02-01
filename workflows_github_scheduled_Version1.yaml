@@ -1,0 +1,31 @@
+name: Weekly Data Sourcing & Enrichment
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'  # Mondays 5am
+  workflow_dispatch:
+
+jobs:
+  sourcing:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+      HUNTER_IO_KEY: ${{ secrets.HUNTER_IO_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      # Add more as needed
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run data sourcing
+        run: python scripts/data_sourcing.py
+      - name: Run lead enrichment
+        run: python scripts/enrich_leads.py
+      - name: Outreach
+        run: python scripts/outreach.py
+      - name: AI scoring/optimization
+        run: python scripts/ai_scoring.py
