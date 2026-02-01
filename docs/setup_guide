@@ -1,0 +1,69 @@
+# Setup Guide: HPD Calibration Automated Lead Generation
+
+## 1. Prerequisites and Accounts
+- Google [Sheets, Console] (for creating OAuth credentials)
+- GitHub (enable Actions)
+- Zapier/Make.com accounts (optional, for no-code workflows)
+- API Keys: Hunter.io, Clearbit, OpenAI or HuggingFace, Socrata, HUDUser, HubSpot, Mailchimp, Twilio, Slack, Telegram
+- (Optional) Railway/Heroku or similar if deploying on serverless
+
+## 2. Setting Up Environment Variables
+1. Copy `.env.example` to `.env`
+2. Fill in all API key values
+3. Place Google Service Account JSON (for Sheets API) in repo root, default filename: `google-creds.json`. Download from Google Cloud Console.
+4. **Never commit your `.env` or `google-creds.json` to version control.**
+
+## 3. Google Sheets Integration
+- [Create a Service Account](https://console.cloud.google.com/apis/credentials)
+- Enable Google Sheets API
+- Share your target Sheet with the service account email (found in the JSON)
+- Enter the Sheet ID (from URL) in your `.env`
+
+## 4. API Credentials
+- **Hunter.io**: https://hunter.io/
+- **Clearbit**: https://dashboard.clearbit.com/signup
+- **OpenAI**: https://platform.openai.com/account/api-keys
+- **NYC Socrata**: https://data.cityofnewyork.us/
+- **HUD Multifamily**: https://www.huduser.gov/portal/datasets/mf.html
+- **HubSpot**: https://developers.hubspot.com/docs/api/overview
+- **Mailchimp**: https://mailchimp.com/developer/
+- **Twilio**: https://www.twilio.com/console
+- **Slack**: https://api.slack.com/apps
+- **Telegram**: https://core.telegram.org/bots
+
+## 5. Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+## 6. One-click Deploy (Railway)
+- Click the Deploy button in README or go to Railway dashboard
+- Fill out all environment fields using your `.env` values
+- Set repo auto-deploy and schedule in the Railway console
+
+## 7. Running Locally (Manual)
+```bash
+python scripts/data_sourcing.py
+python scripts/enrich_leads.py
+python scripts/outreach.py
+python scripts/ai_scoring.py
+```
+
+## 8. Enabling GitHub Actions
+- Push to GitHub.
+- Go to "Actions" tab, enable workflows.
+- Edit `/workflows/github_scheduled.yaml` to customize schedule, set up secrets in your repo.
+
+## 9. Setting Up Telegram Bot (Optional, for community networking)
+- Create a bot using BotFather, get the token.
+- Fill in `TELEGRAM_API_KEY` in your `.env`
+- Run: `python scripts/community_bot.py`
+
+## 10. Integrating No-Code Tools (Zapier/Make.com)
+- Import `workflows/zapier_integration.json` into Zapier dashboard.
+- Map fields to your Sheet, HubSpot, Mailchimp, and Slack workflows as needed.
+
+## Troubleshooting
+- Check logs in GitHub Actions/your server platform for errors.
+- Verify API quotas & limits (free tiers have caps).
+- For NYC-specific errors, validate addresses and data join logic.
