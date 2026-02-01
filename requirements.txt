@@ -1,0 +1,11 @@
+beautifulsoup4
+requests
+openpyxl
+pandas
+google-api-python-client
+google-auth
+pdfplumber
+openai
+scikit-learn
+telebot
+hubspot-api-client
