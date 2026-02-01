@@ -85,36 +85,33 @@ AIRTABLE_API_KEY=
 
 ---
 
-## Workflow Overview
-
-```mermaid name=docs/flowcharts.md
 flowchart TD
     subgraph Data Sourcing
-        A(Scrape DHCR ML List)
-        B[NYC Open Data: Violations]
+        A[Scrape DHCR ML List]
+        B[NYC Open Data Violations]
         C[HUD API]
-        D[Parse PDFs/Excels]
-        A --> F[Merge]
+        D[Parse PDFs and Excels]
+        A --> F[Merge Data]
         B --> F
         C --> F
         D --> F
         F --> G[Master Google Sheet]
     end
     subgraph Lead Enrichment
-        G --> H[Contact Pull (Hunter/Clearbit/Scrape)]
-        H --> I[AI Scoring (Relevance/Urgency)]
+        G --> H[Contact Pull Hunter or Clearbit or Scrape]
+        H --> I[AI Scoring Relevance or Urgency]
         I --> J[Enriched Sheet]
     end
     subgraph Outreach
-        J --> K[CRM Import (HubSpot)]
+        J --> K[CRM Import HubSpot]
         J --> L[Drip Campaigns]
-        J --> M[Multi-channel (Mailchimp/Twilio/LinkedIn/X)]
+        J --> M[Multi-channel Mailchimp Twilio LinkedIn X]
     end
-    subgraph Tracking & Optimization
-        K --> N[Dashboard (Sheets/Airtable)]
+    subgraph Tracking and Optimization
+        K --> N[Dashboard Sheets or Airtable]
         N --> O[ML Feedback Loop]
         O --> I
-        J --> P[Slack/Email Alerts]
+        J --> P[Slack or Email Alerts]
     end
 ```
 
